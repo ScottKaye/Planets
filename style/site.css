@@ -1,0 +1,78 @@
+/* line 4, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+*, *:before, *:after {
+  box-sizing: border-box; }
+
+/* line 9, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+html, body {
+  margin: 0; }
+
+/* line 13, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+body {
+  background: #eee;
+  font-family: sans-serif;
+  background: #111; }
+
+/* line 19, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+.planet {
+  width: 150px;
+  height: 150px;
+  border-radius: 150px;
+  display: block;
+  background: #64a0ff;
+  position: relative;
+  transition: all 250ms ease; }
+  /* line 28, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+  .planet:before {
+    position: absolute;
+    content: "Planet info";
+    padding: 10px;
+    display: block;
+    top: 25%;
+    left: 100%;
+    margin-left: 20px;
+    box-shadow: 0 0 2px #000;
+    border-radius: 5px;
+    width: 200px;
+    min-height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    transition: all 100ms ease; }
+  /* line 45, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+  .planet:after {
+    position: absolute;
+    content: "";
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent, #000);
+    border-radius: 150px;
+    opacity: 0.1;
+    transition: all 100ms ease; }
+  /* line 58, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+  .planet:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 5px #fff, 0 0 0 10px #000; }
+    /* line 61, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+    .planet:hover:after {
+      opacity: 0.2; }
+  /* line 66, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+  .planet:active, .planet:focus {
+    transition: all 50ms ease;
+    box-shadow: 0 0 0 7px #fff, 0 0 0 10px #000;
+    transform: scale(1.025); }
+    /* line 70, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+    .planet:active:before, .planet:focus:before {
+      box-shadow: 0 0 5px #000; }
+
+@keyframes rotate {
+  /* line 77, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+  0% {
+    transform: rotateZ(0); }
+
+  /* line 80, C:/xampp/htdocs/School/MobileWeb/SolarSystem2/style/site.scss */
+  100% {
+    transform: rotate(360deg); } }
+
+/*# sourceMappingURL=site.css.map */
