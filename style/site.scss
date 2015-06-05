@@ -11,9 +11,11 @@ body {
 }
 
 body {
-	background: #eee;
-	font-family: sans-serif;
-	background: #111;
+	font-family: Roboto, sans-serif;
+	background: #111 url(../img/Stars.jpg) no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
 }
 
 .planet {
@@ -21,26 +23,11 @@ body {
 	height: $planet-size;
 	border-radius: $planet-size;
 	display: block;
+	margin: 50px;
+	margin-bottom: 100px;
 	background: #64a0ff;
 	position: relative;
 	transition: all 250ms ease;
-	//Tooltip
-	&:before {
-		position: absolute;
-		content: "Planet info";
-		padding: 10px;
-		display: block;
-		top: 25%;
-		left: 100%;
-		margin-left: 20px;
-		box-shadow: 0 0 2px #000;
-		border-radius: 5px;
-		width: 200px;
-		min-height: 50px;
-		background: rgba(0, 0, 0, 0.5);
-		color: #fff;
-		transition: all 100ms ease;
-	}
 	//Gradient fade
 	&:after {
 		position: absolute;
@@ -57,7 +44,7 @@ body {
 	}
 	&:hover {
 		cursor: pointer;
-		box-shadow: 0 0 0 5px #fff, 0 0 0 10px #000;
+		box-shadow: 0 0 0 5px #111, 0 0 0 10px #eee;
 		&:after {
 			opacity: 0.2;
 		}
@@ -65,19 +52,53 @@ body {
 	&:active,
 	&:focus {
 		transition: all 50ms ease;
-		box-shadow: 0 0 0 7px #fff, 0 0 0 10px #000;
+		box-shadow: 0 0 0 7px #111, 0 0 0 10px #85a6db;
 		transform: scale(1.025);
 		&:before {
 			box-shadow: 0 0 5px #000;
 		}
 	}
+	//Tooltip
+	> figcaption {
+		$bg: rgba(163, 163, 230, 0.5);
+		position: absolute;
+		padding: 10px;
+		display: block;
+		top: 25%;
+		left: 100%;
+		margin-left: 20px;
+		border-radius: 5px;
+		border-top-left-radius: 0;
+		width: 250px;
+		min-height: 100px;
+		background: $bg;
+		color: #fff;
+		transition: all 100ms ease;
+		z-index: 1;
+		-webkit-filter: drop-shadow(0 0 3px #0af);
+		filter: drop-shadow(0 0 3px #0af);
+		&:before {
+			z-index: 1;
+			position: absolute;
+			content: "";
+			top: 0;
+			left: 0;
+			margin-left: -20px;
+			border: 10px solid transparent;
+			border-right-color: $bg;
+		}
+		table {
+			width: 100%;
+		}
+	}
 }
 
-@keyframes rotate {
-	0% {
-		transform: rotateZ(0);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	font-weight: 300;
 }
