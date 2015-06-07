@@ -1,68 +1,75 @@
+/**
+ * GUI methods for the solar system.
+ */
 (function (solar, undefined) {
 	"use strict";
 
 	//Private vars
 
-	var _guiSettings = {
-		tooltipWidth: 200,
-		tooltipHeight: 300,
-		tooltipOffsetX: 15,
-		tooltipOffsetY: 15
-	};
 	var _w = window.innerWidth;
 	var _h = window.innerHeight;
+	var _z = 0;
 	var _paper = null;
 	var _tooltip = null;
 
 	//Private methods
 
-	//Disables mouse events
+	/**
+	 * Raphael extension method to disable mouse events from being processed on an element.
+	 */
 	Raphael.el.noclick = function () {
 		this.node.setAttribute("pointer-events", "none");
+		return this;
 	};
 
+	/**
+	 * Creates and fades in the tooltip on the planet that was hovered.
+	 * @param {Object} evt Mouse event containing position.
+	 */
 	function showPlanetTooltip(evt) {
-		console.log(evt.target);
-		var x = evt.target.cx.animVal.value + _guiSettings.tooltipOffsetX;
-		var y = evt.target.cy.animVal.value + _guiSettings.tooltipOffsetY;
+		//Put tooltip beside planet + offset
+		var x = evt.pageX;
+		var y = evt.pageY;
 
-		if (!_tooltip) {
-			_tooltip = _paper.rect(x, y, _guiSettings.tooltipWidth, _guiSettings.tooltipHeight).attr({
-				fill: "#00ff00",
-				opacity: 0
-			}).animate({
-				opacity: 1
-			}, 100);
-			_tooltip.noclick();
-		} else {
-			_tooltip.animate({
-					opacity: 1
-				}, 100)
-				.attr({
-					x: x,
-					y: y
-				});
-		}
+		//If the tooltip hasn't already been created, create it.
+		$(_tooltip).stop().animate({
+			top: y,
+			left: x,
+			opacity: 1
+		}, 250);
 	}
 
+	/**
+	 * Fades out the tooltip.
+	 */
 	function hidePlanetTooltip() {
-		_tooltip.animate({
+		$(_tooltip).stop().animate({
 			opacity: 0
-		}, 100);
+		}, 250);
 	}
 
+	/**
+	 * Lights up an orbit path ring.
+	 */
 	function ringOn() {
 		this.animate({
 			opacity: 0.3
 		}, 100);
 	}
 
+	/**
+	 * Dims the orbit path ring.
+	 */
 	function ringOff() {
 		this.animate({
 			opacity: 0.2
 		}, 100);
 	}
 
+	/**
+	 * Initializes Raphael context and events.  Also creates elements to be used in the GUI.
+	 * @param {DOMElement} container Element to add Raphael context to.
+	 */
 	function initContainer(container) {
 		_paper = new Raphael(container, _w, _h);
 
@@ -74,43 +81,79 @@
 		viewBox.X = 0;
 		viewBox.Y = 0;
 
+		//Handle zoom
 		window.addEventListener("wheel", function (e) {
 			var delta = e.wheelDelta / 120;
+
+			_z += delta;
+
+			if (_z < -10 || _z > 10) {
+				_z -= delta;
+				return;
+			}
+
 			var vBWo = viewBoxWidth;
 			var vBHo = viewBoxHeight;
+			var mult = delta > 0 ? 0.9 : 1.1;
 
-			if (delta > 0) {
-				viewBoxWidth *= 0.9;
-				viewBoxHeight *= 0.9;
-			} else {
-				viewBoxWidth *= 1.1;
-				viewBoxHeight *= 1.1;
-			}
+			viewBoxWidth *= mult;
+			viewBoxHeight *= mult;
 
 			viewBox.X -= (viewBoxWidth - vBWo) / 2;
 			viewBox.Y -= (viewBoxHeight - vBHo) / 2;
 			_paper.setViewBox(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
 		});
+		
+		//Handle panning
+		document.addEventListener("mousedown", function (e) {
+			//Middle mouse was clicked
+			if (e.button === 1) {
+				e.preventDefault();
+			}
+		});
+
+		//Create tooltip
+		_tooltip = document.createElement("div");
+		_tooltip.id = "tooltip";
+		document.body.appendChild(_tooltip);
 	}
 
+	/**
+	 * Repositions all planets along their orbit paths relative to time and progress.
+	 */
 	function reOrbit() {
 		var i = solar.planets.length;
 
 		while (i--) {
 			var p = solar.planets[i];
-			var progress = p.orbit.length / (100 / p.orbit.progress++);
+			p.orbit.progress += p.orbit_time_step
+
+			var progress = p.orbit.length / (100 / p.orbit.progress);
 			if (progress >= p.orbit.length) p.orbit.progress = 0;
 
 			var pos = p.orbit.getPointAtLength(progress);
 
-			p.circle.animate({
+			p.set.animate({
 				cx: pos.x,
 				cy: pos.y
-			}, p.orbit_time);
+			}, 100);
 		}
 	}
 
+	/**
+	 * Adds each planet along their orbits.
+	 */
 	function initSolarSystem() {
+		//Create sun behind all other elements
+		var sunRadius = 25;
+		_paper.circle(_w / 2, _h / 2, sunRadius).attr({
+			fill: "#ff9900",
+			"stroke-width": 0,
+		}).noclick().glow({
+			color: "#ff9900",
+			width: 50
+		});
+
 		//First find max distance and radius for normalization
 		var p, i;
 		var max = {
@@ -143,46 +186,44 @@
 			p.orbit.length = p.orbit.getTotalLength();
 
 			//Create planet, position randomly along orbit path
-			var pos = p.orbit.getPointAtLength(p.orbit.length / (1 / Math.random()));
+			var progress = p.orbit.length * Math.random();
+			var pos = p.orbit.getPointAtLength(progress);
+
+			var outlineSize = Math.max(radius * 1.2, 10);
+			var outline = _paper.circle(pos.x, pos.y, outlineSize).attr({
+				fill: p.color,
+				"stroke-width": 0,
+				opacity: 0.2
+			});
+
 			p.circle = _paper.circle(pos.x, pos.y, radius).attr({
-					fill: p.color,
-					"stroke-width": 0
-				})
-				.toFront();
+				fill: p.color,
+				"stroke-width": 0
+			}).toFront();
 
-			p.circle.hover(showPlanetTooltip, hidePlanetTooltip)
-				.glow({
-					//color: p.color,
-					width: 1
-				}).toBack();
-
-			p.orbit.progress = 0;
+			outline.hover(showPlanetTooltip, hidePlanetTooltip, p.circle);
+			p.circle.hover(showPlanetTooltip, hidePlanetTooltip);
+			p.orbit.progress = progress;
 			p.orbit.toBack();
+
+			p.set = _paper.set();
+			p.set.push(p.circle, outline);
 
 			//Save planet with circle for tooltips/lookups
 			//This is a circular reference, do not use for..in on this!
 			p.circle.planet = p;
-
-			//Orbit animation
-			console.log(p);
-			window.setInterval(function () {
-				reOrbit(p);
-			}, p.orbit_time);
 		}
 
-		//Create sun above all other elements
-		var sunRadius = 5;
-		_paper.circle(_w / 2, _h / 2, sunRadius).attr({
-			fill: "#ff9900",
-			"stroke-width": 0,
-		}).glow({
-			color: "#ff9900",
-			width: 1
-		}).toFront();
+		//Orbit animation
+		window.setInterval(reOrbit, 100);
 	}
 
 	//Public methods
 
+	/**
+	 * Initializes the entire solar system GUI.
+	 * @param {DOMElement} container Container to initialize Raphael.
+	 */
 	solar.loadGui = function (container) {
 		console.log(container);
 		if (!solar.status.loaded) {

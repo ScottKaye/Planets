@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "solar-system-style.css",
+  "sources": [
+    "solar-system-style.scss"
+  ],
+  "sourcesContent": [],
+  "mappings": ";AAAA,AAAG;EACF,AAAU;EACV,AAAY;EACZ,AAAe;EACf,AAAW;EACX,AAAY;EACZ,AAAK;EACL,AAAM;EACN,AAAgB;EAChB,AAAa;EACb,AAAY;EACZ,AAAS",
+  "names": []
+}

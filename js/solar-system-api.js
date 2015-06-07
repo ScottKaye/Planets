@@ -1,3 +1,6 @@
+/**
+ * Main API used by the rest of the application; responsible for loading and parsing planets.xml into a usable JS object.
+ */
 (function (solar, undefined) {
 	"use strict";
 
@@ -10,6 +13,10 @@
 
 	//Private methods
 	
+	/**
+	 * Parses a planet node from XML into a usable planet object.
+	 * @param {DOMElement} node XML node to process.
+	 */
 	function loadPlanet(node) {
 		var props = {
 			color: $(node).attr("COLOR"),
@@ -23,9 +30,15 @@
 			satellites: loadSatellites($(node).find("> SATELLITES").children()),
 		};
 		props.orbit_time = props.length_of_year * 365;
+		props.orbit_time_step = props.orbit_time / 1e5;
 		solar.planets.push(props);
 	}
 
+	/**
+	 * Similar to loadPlanet, except this method loads data relating to satellites.
+	 * @param   {DOMElement} node XML node to process.
+	 * @returns {Object}     Usable satellite object.
+	 */
 	function loadSatellites(node) {
 		if (node.length) {
 			var satellites = [];
@@ -41,50 +54,10 @@
 		return null;
 	}
 
-	function toNaturalLanguage(string) {
-		string = "" + string.toLowerCase();
-		var lowercase = ["of", "a", "to"];
-		var i, len;
-
-		if (string) {
-			//Is it a number?
-			if (parseInt(string) == string) {
-				if (parseInt(string) >= 10000) {
-					string = string.split("");
-					//Add commas
-					for (i = string.length - 1; i >= 0; i -= 3) {
-						if (i < string.length - 1)
-							string[i] = string[i] + ",";
-					}
-					string = string.join("");
-				}
-			} else {
-				//Capitalize first letter
-				string = string.split("");
-				string[0] = string[0].toUpperCase();
-
-				//Split underscores into spaces
-				for (i = 0, len = string.length; i < len; i++) {
-					if (string[i] == "_") {
-						string[i] = " ";
-						if (string[i + 1]) {
-							string[i + 1] = string[i + 1].toUpperCase();
-						}
-					}
-				}
-
-				string = string.join("");
-
-				//Lowercase replacements
-				for (i = 0, len = lowercase.length; i < len; i++) {
-					var expr = new RegExp(lowercase[i], "gi");
-					string = string.replace(expr, lowercase[i]);
-				}
-			}
-		}
-		return string;
-	}
-
+	/**
+	 * Downloads planets.xml and starts the loading process.
+	 * @param {function} callback Function to run after all planets are loaded.
+	 */
 	function loadApi(callback) {
 		//Download planets.xml
 		$.ajax({
@@ -103,6 +76,9 @@
 		});
 	}
 
+	/**
+	 * Used while loading the API; will reset the load if a load has already happened.
+	 */
 	function reset() {
 		solar.planets = [];
 		solar.status.loaded = false;
@@ -110,6 +86,10 @@
 
 	//Public methods
 	
+	/**
+	 * Public-facing loadApi.
+	 * @param {function} callback Function to run after all planets are loaded.
+	 */
 	solar.loadApi = function (callback) {
 		//Reset if needed
 		if (solar.status.loaded) {

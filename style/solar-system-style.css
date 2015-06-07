@@ -1,0 +1,15 @@
+/* line 1, Z:/xampp/htdocs/SolarSystem2/Planets/style/solar-system-style.scss */
+div#tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  min-width: 200px;
+  min-height: 300px;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  margin-left: 20px;
+  margin-top: 20px;
+  opacity: 0; }
+
+/*# sourceMappingURL=solar-system-style.css.map */
