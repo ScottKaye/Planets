@@ -1,7 +1,9 @@
 {
 	"globals": {
 		"$": false,
+		"Raphael": false,
 		"solar": false,
-		"window": false
+		"window": false,
+		"document": false
 	}
 }

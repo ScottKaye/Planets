@@ -1,30 +1,29 @@
 (function (solar, undefined) {
 	"use strict";
 
-	//Private vars
-
-	var _status = {
-		loaded: false
-	};
-
-	var _uuids = []; //List of generated UUIDs
-	var _planets = [];
+	//Public vars
+	
+	solar.status = solar.status || {};
+	solar.status.loaded = false;
+	
+	solar.planets = solar.planets || [];
 
 	//Private methods
-
+	
 	function loadPlanet(node) {
 		var props = {
 			color: $(node).attr("COLOR"),
 			name: $(node).find("> NAME").text(),
-			distance: $(node).find("> DISTANCE").text(),
-			radius: $(node).find("> RADIUS").text(),
+			distance: parseFloat($(node).find("> DISTANCE").text()),
+			radius: parseFloat($(node).find("> RADIUS").text()),
 			length_of_year: $(node).find("> LENGTH_OF_YEAR").text(),
-			day: $(node).find("> DAY").text(),
-			mass: $(node).find("> MASS").text(),
-			density: $(node).find("> DENSITY").text(),
+			day: parseFloat($(node).find("> DAY").text()),
+			mass: parseFloat($(node).find("> MASS").text()),
+			density: parseFloat($(node).find("> DENSITY").text()),
 			satellites: loadSatellites($(node).find("> SATELLITES").children()),
 		};
-		_planets.push(props);
+		props.orbit_time = props.length_of_year * 365;
+		solar.planets.push(props);
 	}
 
 	function loadSatellites(node) {
@@ -86,38 +85,7 @@
 		return string;
 	}
 
-	function planetTable(planet) {
-		var table = $("<table></table>");
-		for (var prop in planet) {
-			var val = (planet[prop]);
-
-			switch (typeof planet[prop]) {
-			case "string":
-				prop = toNaturalLanguage(prop);
-				var row = $("<tr></tr>")
-					.append(
-						$("<td></td>")
-						.text(prop)
-					)
-					.append(
-						$("<td></td>")
-						.text(toNaturalLanguage(val))
-					);
-				$(table).append(row);
-				break;
-			default:
-				if (val && val.length) {
-					for (var subprop in val) {
-						console.log(subprop, val[subprop]);
-					}
-				}
-				break;
-			}
-		}
-		return table;
-	}
-
-	function load(callback) {
+	function loadApi(callback) {
 		//Download planets.xml
 		$.ajax({
 			url: "res/planets.xml",
@@ -126,30 +94,29 @@
 			success: function (data) {
 				//Enter solar system
 				var planets = $(data).find("SOLAR_SYSTEM > PLANETS").children();
-				//Load each planet into _planets
+				//Load each planet into solar.planets
 				for (var i = 0, len = planets.length; i < len; loadPlanet(planets[i++]));
-				_status.loaded = true;
+				solar.status.loaded = true;
 
-				if (typeof callback === "function") callback(_planets);
+				if (typeof callback === "function") callback(solar.planets);
 			}
 		});
 	}
 
 	function reset() {
-		_uuids = [];
-		_planets = [];
-		_status.loaded = false;
+		solar.planets = [];
+		solar.status.loaded = false;
 	}
 
 	//Public methods
-
-	solar.load = function (callback) {
+	
+	solar.loadApi = function (callback) {
 		//Reset if needed
-		if (_status.loaded) {
+		if (solar.status.loaded) {
 			reset();
 		}
 
-		load(callback);
+		loadApi(callback);
 	};
 
 }(window.solar = window.solar || {}));
