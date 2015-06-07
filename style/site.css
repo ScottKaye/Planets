@@ -1,32 +1,44 @@
-/* line 4, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+@font-face {
+  font-family: "Prime Regular";
+  src: url("../res/fonts/prime_regular-webfont.eot");
+  src: url("../res/fonts/prime_regular-webfont.eot?#iefix") format("embedded-opentype"), url("../res/fonts/prime_regular-webfont.woff2") format("woff2"), url("../res/fonts/prime_regular-webfont.woff") format("woff"), url("../res/fonts/prime_regular-webfont.ttf") format("truetype"), url("../res/fonts/prime_regular-webfont.svg#Prime Regular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+/* line 13, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
 *, *:before, *:after {
   box-sizing: border-box; }
 
-/* line 9, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+/* line 18, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
 html, body {
   margin: 0; }
 
-/* line 13, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+/* line 22, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
 body {
-  font-family: Roboto, sans-serif;
-  background: #111 url(../img/Stars.jpg) no-repeat;
+  font-family: Prime, sans-serif;
+  font-size: 1.2em;
+  background: #111 url(../img/Space.png) no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-position: center; }
+  background-position: center;
+  color: #eee; }
 
-/* line 21, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-.planet {
-  width: 150px;
-  height: 150px;
-  border-radius: 150px;
+/* line 32, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+figure#planet {
+  width: 75vmin;
+  height: 75vmin;
+  top: -45vmin;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-radius: 75vmin;
   display: block;
-  margin: 50px;
-  margin-bottom: 100px;
-  background: #64a0ff;
-  position: relative;
-  transition: all 250ms ease; }
-  /* line 32, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-  .planet:after {
+  background: #007eff;
+  transition: all 250ms ease;
+  box-shadow: 0 0 100px rgba(255, 255, 255, 0.5), inset 0 0 100px rgba(255, 255, 255, 0.5), inset 0 0 0 5px rgba(0, 0, 0, 0.2); }
+  /* line 46, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+  figure#planet:after {
     position: absolute;
     content: "";
     display: block;
@@ -34,60 +46,142 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(transparent, #000);
-    border-radius: 150px;
-    opacity: 0.1;
+    background: linear-gradient(-25deg, transparent, #000);
+    border-radius: 75vmin;
+    opacity: 0.8;
     transition: all 100ms ease; }
-  /* line 45, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-  .planet:hover {
-    cursor: pointer;
-    box-shadow: 0 0 0 5px #111, 0 0 0 10px #eee; }
-    /* line 48, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-    .planet:hover:after {
-      opacity: 0.2; }
-  /* line 53, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-  .planet:active, .planet:focus {
+  /* line 59, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+  figure#planet:hover {
+    cursor: pointer; }
+    /* line 61, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+    figure#planet:hover:after {
+      opacity: 0.7; }
+  /* line 66, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+  figure#planet:active, figure#planet:focus {
     transition: all 50ms ease;
-    box-shadow: 0 0 0 7px #111, 0 0 0 10px #85a6db;
-    transform: scale(1.025); }
-    /* line 57, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-    .planet:active:before, .planet:focus:before {
+    transform: scale(1.01); }
+    /* line 69, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+    figure#planet:active:before, figure#planet:focus:before {
       box-shadow: 0 0 5px #000; }
-  /* line 62, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-  .planet > figcaption {
-    position: absolute;
-    padding: 10px;
-    display: block;
-    top: 25%;
-    left: 100%;
-    margin-left: 20px;
-    border-radius: 5px;
-    border-top-left-radius: 0;
-    width: 250px;
-    min-height: 100px;
-    background: rgba(163, 163, 230, 0.5);
-    color: #fff;
-    transition: all 100ms ease;
-    z-index: 1;
-    -webkit-filter: drop-shadow(0 0 3px #0af);
-    filter: drop-shadow(0 0 3px #0af); }
-    /* line 80, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-    .planet > figcaption:before {
-      z-index: 1;
-      position: absolute;
-      content: "";
-      top: 0;
-      left: 0;
-      margin-left: -20px;
-      border: 10px solid transparent;
-      border-right-color: rgba(163, 163, 230, 0.5); }
-    /* line 90, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
-    .planet > figcaption table {
-      width: 100%; }
 
-/* line 101, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+/* line 75, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+section.info {
+  margin-top: 37.5vmin;
+  width: 100%;
+  padding: 5vw 5vh;
+  margin-top: 10vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center; }
+  /* line 84, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+  section.info > :last-child {
+    padding: 0;
+    width: 30vmax; }
+
+/* line 95, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
 h1, h2, h3, h4, h5, h6 {
+  margin: 0; }
+
+/* line 99, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+h1 {
+  font-family: "Prime Regular";
+  border: 2px solid #007eff;
+  color: #007eff;
+  padding: 0 1em;
+  border-top: none;
+  border-bottom: none;
+  line-height: 1.5em;
+  text-transform: uppercase;
+  background: linear-gradient(transparent, #000);
+  display: inline-block; }
+
+/* line 112, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+div.info-box {
+  width: 35vw;
+  max-width: 300px;
+  border: 1px solid #007eff;
+  border-left-width: 2px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding: 10px;
+  color: #007eff;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px #007eff;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5); }
+  /* line 124, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+  div.info-box table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse; }
+    /* line 129, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+    div.info-box table tr td {
+      padding: 15px 10px;
+      text-transform: uppercase; }
+      /* line 132, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+      div.info-box table tr td:last-child {
+        text-align: right; }
+    /* line 136, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+    div.info-box table tr:not(:last-child) {
+      border-bottom: 1px solid #007eff; }
+
+/* line 143, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+h1#planet-name {
+  background: none;
+  border: none;
+  font-family: Orbitron;
+  font-weight: 700;
+  font-size: 5vw;
+  color: #fff;
+  text-shadow: 0 0 100px #fff, 0 0 50px #007eff;
   margin: 0;
-  font-weight: 300; }
+  padding: 0;
+  text-align: center;
+  width: 100%; }
+
+/* line 157, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+nav {
+  font-size: 1.5em;
+  position: absolute;
+  bottom: 5vh;
+  width: 100%; }
+  /* line 162, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; }
+    /* line 169, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+    nav ul li {
+      color: #007eff;
+      text-shadow: 0 0 5px #007eff;
+      margin-bottom: 10px;
+      transition: all 500ms ease;
+      border-bottom: 1px solid transparent;
+      text-transform: uppercase; }
+      /* line 176, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+      nav ul li.current {
+        color: #fff;
+        text-shadow: 0 0 10px #fff;
+        border-bottom: 1px solid #fff; }
+      /* line 181, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+      nav ul li:hover:not(.current) {
+        color: #3398ff;
+        text-shadow: 0 0 5px #3398ff;
+        border-bottom: 1px solid #007eff; }
+      /* line 186, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+      nav ul li:hover {
+        transition: all 100ms ease;
+        box-shadow: 0 5px 0 #fff; }
+      /* line 190, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+      nav ul li:active {
+        transform: scale(0.98); }
+      /* line 193, Z:/xampp/htdocs/SolarSystem2/Planets/style/site.scss */
+      nav ul li a {
+        color: inherit;
+        text-decoration: none;
+        padding: 10px; }
 
 /*# sourceMappingURL=site.css.map */

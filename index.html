@@ -4,13 +4,63 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Solar System</title>
+	<link href="http://fonts.googleapis.com/css?family=Orbitron:700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="style/site.css">
 </head>
 
 <body>
 
-	<section class="solar-system">
+	<figure id="planet"></figure>
+	
+	<section class="info">
+		<div>
+			<h1>Planetarium</h1>
+			<div class="info-box">
+				<table>
+					<tr>
+						<td>Mass</td>
+						<td id="info-mass"></td>
+					</tr>
+					<tr>
+						<td>Density</td>
+						<td id="info-density"></td>
+					</tr>
+					<tr>
+						<td>Radius</td>
+						<td id="info-radius"></td>
+					</tr>
+					<tr>
+						<td>Distance</td>
+						<td id="info-distance"></td>
+					</tr>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+					</tr>
+					<tr>
+						<td>Year</td>
+						<td id="info-year"></td>
+					</tr>
+					<tr>
+						<td>Day</td>
+						<td id="info-day"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div>
+			
+		</div>
+		<div>
+			<h1 id="planet-name">
+				Earth
+			</h1>
+		</div>
 	</section>
+	
+	<nav>
+		<ul id="planet-list">
+		</ul>
+	</nav>
 
 	<script src="js/vendor/jquery.js"></script>
 	<script src="js/solar-system.js"></script>

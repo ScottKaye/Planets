@@ -107,7 +107,7 @@
 				break;
 			default:
 				if (val && val.length) {
-					for(var subprop in val) {
+					for (var subprop in val) {
 						console.log(subprop, val[subprop]);
 					}
 				}
@@ -135,23 +135,6 @@
 		});
 	}
 
-	function createPlanet(planet) {
-		return $("<figure></figure>")
-			.addClass("planet")
-			.css({
-				background: planet.color,
-			})
-			.data("planet", planet)
-			.append(
-				$("<figcaption></figcaption>")
-				.append(
-					$("<h1></h1>")
-					.text(planet.name)
-				)
-				.append(planetTable(planet))
-			);
-	}
-
 	function reset() {
 		_uuids = [];
 		_planets = [];
@@ -162,13 +145,11 @@
 
 	solar.load = function (callback) {
 		//Reset if needed
-		if (_status.loaded) reset();
+		if (_status.loaded) {
+			reset();
+		}
 
 		load(callback);
 	};
-
-	solar.createPlanet = function (planet) {
-		return createPlanet(planet);
-	}
 
 }(window.solar = window.solar || {}));

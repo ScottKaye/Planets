@@ -1,4 +1,13 @@
-$planet-size: 150px;
+@font-face {
+	font-family: "Prime Regular";
+	src: url("../res/fonts/prime_regular-webfont.eot");
+	src: url("../res/fonts/prime_regular-webfont.eot?#iefix") format("embedded-opentype"), url("../res/fonts/prime_regular-webfont.woff2") format("woff2"), url("../res/fonts/prime_regular-webfont.woff") format("woff"), url("../res/fonts/prime_regular-webfont.ttf") format("truetype"), url("../res/fonts/prime_regular-webfont.svg#Prime Regular") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+
+$planet-size: 75vmin;
+$blue: #007eff;
 *,
 *:before,
 *:after {
@@ -11,23 +20,28 @@ body {
 }
 
 body {
-	font-family: Roboto, sans-serif;
-	background: #111 url(../img/Stars.jpg) no-repeat;
+	font-family: Prime, sans-serif;
+	font-size: 1.2em;
+	background: #111 url(../img/Space.png) no-repeat;
 	background-attachment: fixed;
 	background-size: cover;
 	background-position: center;
+	color: #eee;
 }
 
-.planet {
+figure#planet {
 	width: $planet-size;
 	height: $planet-size;
+	top: -(($planet-size + 15) / 2);
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
 	border-radius: $planet-size;
 	display: block;
-	margin: 50px;
-	margin-bottom: 100px;
-	background: #64a0ff;
-	position: relative;
+	background: $blue;
 	transition: all 250ms ease;
+	box-shadow: 0 0 100px rgba(255, 255, 255, 0.5), inset 0 0 100px rgba(255, 255, 255, 0.5), inset 0 0 0 5px rgba(0, 0, 0, 0.2);
 	//Gradient fade
 	&:after {
 		position: absolute;
@@ -37,59 +51,39 @@ body {
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(transparent, #000);
+		background: linear-gradient(-25deg, transparent, #000);
 		border-radius: $planet-size;
-		opacity: 0.1;
+		opacity: 0.8;
 		transition: all 100ms ease;
 	}
 	&:hover {
 		cursor: pointer;
-		box-shadow: 0 0 0 5px #111, 0 0 0 10px #eee;
 		&:after {
-			opacity: 0.2;
+			opacity: 0.7;
 		}
 	}
 	&:active,
 	&:focus {
 		transition: all 50ms ease;
-		box-shadow: 0 0 0 7px #111, 0 0 0 10px #85a6db;
-		transform: scale(1.025);
+		transform: scale(1.01);
 		&:before {
 			box-shadow: 0 0 5px #000;
 		}
 	}
-	//Tooltip
-	> figcaption {
-		$bg: rgba(163, 163, 230, 0.5);
-		position: absolute;
-		padding: 10px;
-		display: block;
-		top: 25%;
-		left: 100%;
-		margin-left: 20px;
-		border-radius: 5px;
-		border-top-left-radius: 0;
-		width: 250px;
-		min-height: 100px;
-		background: $bg;
-		color: #fff;
-		transition: all 100ms ease;
-		z-index: 1;
-		-webkit-filter: drop-shadow(0 0 3px #0af);
-		filter: drop-shadow(0 0 3px #0af);
-		&:before {
-			z-index: 1;
-			position: absolute;
-			content: "";
-			top: 0;
-			left: 0;
-			margin-left: -20px;
-			border: 10px solid transparent;
-			border-right-color: $bg;
-		}
-		table {
-			width: 100%;
-		}
+}
+
+section.info {
+	margin-top: $planet-size / 2;
+	width: 100%;
+	padding: 5vw 5vh;
+	margin-top: 10vh;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-items: center;
+	>:last-child {
+		padding: 0;
+		width: 30vmax;
 	}
 }
 
@@ -100,5 +94,107 @@ h4,
 h5,
 h6 {
 	margin: 0;
-	font-weight: 300;
+}
+
+h1 {
+	font-family: "Prime Regular";
+	border: 2px solid $blue;
+	color: $blue;
+	padding: 0 1em;
+	border-top: none;
+	border-bottom: none;
+	line-height: 1.5em;
+	text-transform: uppercase;
+	background: linear-gradient(transparent, #000);
+	display: inline-block;
+}
+
+div.info-box {
+	width: 35vw;
+	max-width: 300px;
+	border: 1px solid $blue;
+	border-left-width: 2px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	padding: 10px;
+	color: $blue;
+	background: rgba(0, 0, 0, 0.5);
+	box-shadow: 0 0 10px $blue;
+	text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+	table {
+		width: 100%;
+		table-layout: fixed;
+		border-collapse: collapse;
+		tr {
+			td {
+				padding: 15px 10px;
+				text-transform: uppercase;
+				&:last-child {
+					text-align: right;
+				}
+			}
+			&:not(:last-child) {
+				border-bottom: 1px solid $blue;
+			}
+		}
+	}
+}
+
+h1#planet-name {
+	background: none;
+	border: none;
+	font-family: Orbitron;
+	font-weight: 700;
+	font-size: 5vw;
+	color: #fff;
+	text-shadow: 0 0 100px #fff, 0 0 50px $blue;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 100%;
+}
+
+nav {
+	font-size: 1.5em;
+	position: absolute;
+	bottom: 5vh;
+	width: 100%;
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		li {
+			color: $blue;
+			text-shadow: 0 0 5px $blue;
+			margin-bottom: 10px;
+			transition: all 500ms ease;
+			border-bottom: 1px solid transparent;
+			text-transform: uppercase;
+			&.current {
+				color: #fff;
+				text-shadow: 0 0 10px #fff;
+				border-bottom: 1px solid #fff;
+			}
+			&:hover:not(.current) {
+				color: lighten($blue, 10%);
+				text-shadow: 0 0 5px lighten($blue, 10%);
+				border-bottom: 1px solid $blue;
+			}
+			&:hover {
+				transition: all 100ms ease;
+				box-shadow: 0 5px 0 #fff;
+			}
+			&:active {
+				transform: scale(0.98);
+			}
+			a {
+				color: inherit;
+				text-decoration: none;
+				padding: 10px;
+			}
+		}
+	}
 }
