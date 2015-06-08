@@ -23,7 +23,7 @@
 			name: $(node).find("> NAME").text(),
 			distance: parseFloat($(node).find("> DISTANCE").text()),
 			radius: parseFloat($(node).find("> RADIUS").text()),
-			length_of_year: $(node).find("> LENGTH_OF_YEAR").text(),
+			length_of_year: parseFloat($(node).find("> LENGTH_OF_YEAR").text()),
 			day: parseFloat($(node).find("> DAY").text()),
 			mass: parseFloat($(node).find("> MASS").text()),
 			density: parseFloat($(node).find("> DENSITY").text()),
