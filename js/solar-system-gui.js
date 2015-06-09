@@ -200,12 +200,16 @@
 		while (i--) {
 			p = solar.planets[i];
 
+			console.log(p.name, p.orbit_time_step);
+			
 			//Normalized distance & radius
-			var distance = p.distance / max.distance * _w / 12;
 			var radius = p.radius / max.radius * _h / 50 + 2;
+			radius = p.radius / 5000;
+			var distance = p.distance / 10;
+			
 
 			//Create orbit path
-			p.orbit = _paper.ellipse(_w / 2, _h / 2, _w / distance, _h / distance).attr({
+			p.orbit = _paper.ellipse(_w / 2, _h / 2, distance, distance).attr({
 					fill: "#5a4479",
 					"stroke-width": 0,
 					opacity: 0.2

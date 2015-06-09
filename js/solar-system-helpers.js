@@ -12,7 +12,7 @@
 	 * @returns {String} Parsed string.
 	 */
 	function toNaturalLanguage(string) {
-		string = "" + string.toLowerCase();
+		string = "" + string.toLowerCase().trim();
 		var lowercase = ["of", "a", "to"];
 		var i, len;
 

@@ -30,7 +30,7 @@
 			satellites: loadSatellites($(node).find("> SATELLITES").children()),
 		};
 		props.orbit_time = props.length_of_year * 365;
-		props.orbit_time_step = props.orbit_time / 1e5;
+		props.orbit_time_step = 1 - (props.orbit_time / 1e5);
 		solar.planets.push(props);
 	}
 

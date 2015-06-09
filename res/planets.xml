@@ -159,7 +159,7 @@
    </PLANET>
    
    
-   <PLANET COLOR="GRAY">
+   <PLANET COLOR="LIME">
        <NAME>Pluto</NAME>
        <DISTANCE UNITS="km">5910</DISTANCE>
        <RADIUS UNITS="km">3000</RADIUS>
