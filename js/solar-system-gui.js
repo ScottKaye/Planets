@@ -103,7 +103,7 @@
 			viewBox.Y -= (viewBoxHeight - vBHo) / 2;
 			_paper.setViewBox(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
 		});
-		
+
 		//Handle panning
 		document.addEventListener("mousedown", function (e) {
 			//Middle mouse was clicked
@@ -126,17 +126,45 @@
 
 		while (i--) {
 			var p = solar.planets[i];
-			p.orbit.progress += p.orbit_time_step
+			p.orbit.progress += p.orbit_time_step;
 
 			var progress = p.orbit.length / (100 / p.orbit.progress);
 			if (progress >= p.orbit.length) p.orbit.progress = 0;
 
 			var pos = p.orbit.getPointAtLength(progress);
 
+			//Move planet
 			p.set.animate({
 				cx: pos.x,
 				cy: pos.y
 			}, 100);
+
+			//Satellites
+			if (p.satellites) {
+				var j = p.satellites.length;
+				while (j--) {
+					var s = p.satellites[j];
+					s.orbit.progress += 2;
+
+					var sProgress = s.orbit.length / (100 / s.orbit.progress);
+					if (sProgress >= s.orbit.length) s.orbit.progress = 0;
+
+
+					var sPos = s.orbit.getPointAtLength(sProgress);
+
+					//Move satellite along orbit
+					s.circle.animate({
+						cx: sPos.x,
+						cy: sPos.y
+					}, 100);
+
+					//Move satellite orbit with planet
+					s.orbit.animate({
+						cx: pos.x,
+						cy: pos.y
+					});
+				}
+			}
 		}
 	}
 
@@ -148,7 +176,7 @@
 		var sunRadius = 25;
 		_paper.circle(_w / 2, _h / 2, sunRadius).attr({
 			fill: "#ff9900",
-			"stroke-width": 0,
+			"stroke-width": 0
 		}).noclick().glow({
 			color: "#ff9900",
 			width: 50
@@ -173,7 +201,7 @@
 			p = solar.planets[i];
 
 			//Normalized distance & radius
-			var distance = p.distance / max.distance * _w / 16;
+			var distance = p.distance / max.distance * _w / 12;
 			var radius = p.radius / max.radius * _h / 50 + 2;
 
 			//Create orbit path
@@ -199,19 +227,51 @@
 			p.circle = _paper.circle(pos.x, pos.y, radius).attr({
 				fill: p.color,
 				"stroke-width": 0
-			}).toFront();
+			}).toFront().noclick();
 
 			outline.hover(showPlanetTooltip, hidePlanetTooltip, p.circle);
-			p.circle.hover(showPlanetTooltip, hidePlanetTooltip);
 			p.orbit.progress = progress;
 			p.orbit.toBack();
-
-			p.set = _paper.set();
-			p.set.push(p.circle, outline);
 
 			//Save planet with circle for tooltips/lookups
 			//This is a circular reference, do not use for..in on this!
 			p.circle.planet = p;
+
+			p.set = _paper.set();
+
+			//Satellites
+			if (p.satellites) {
+				var j = p.satellites.length;
+				while (j--) {
+					var s = p.satellites[j];
+
+					//Create orbit path
+					var sRadius = radius * s.distance_from_planet / 100000;
+					sRadius = Math.max(sRadius, radius * 5);
+					sRadius = Math.min(sRadius, radius * 2.5);
+					s.orbit = _paper.circle(pos.x, pos.y, sRadius).attr({
+						opacity: 0.05,
+						stroke: "#000",
+						"stroke-width": 1
+					}).toBack().noclick();
+					s.orbit.length = s.orbit.getTotalLength();
+
+					//Find satellite position along orbit
+					var sProgress = s.orbit.length * Math.random();
+					var sPos = s.orbit.getPointAtLength(sProgress);
+
+					s.orbit.progress = sProgress;
+
+					//Create satellite
+					s.circle = _paper.circle(sPos.x, sPos.y, radius * 0.25).attr({
+						"stroke-width": 0,
+						fill: "#333"
+					}).noclick();
+				}
+			}
+
+			p.set.push(p.circle);
+			p.set.push(outline);
 		}
 
 		//Orbit animation
