@@ -162,7 +162,7 @@
 					s.orbit.animate({
 						cx: pos.x,
 						cy: pos.y
-					});
+					}, 100);
 				}
 			}
 		}
@@ -200,13 +200,10 @@
 		while (i--) {
 			p = solar.planets[i];
 
-			console.log(p.name, p.orbit_time_step);
-			
 			//Normalized distance & radius
 			var radius = p.radius / max.radius * _h / 50 + 2;
 			radius = p.radius / 5000;
 			var distance = p.distance / 10;
-			
 
 			//Create orbit path
 			p.orbit = _paper.ellipse(_w / 2, _h / 2, distance, distance).attr({
@@ -257,7 +254,7 @@
 						opacity: 0.05,
 						stroke: "#000",
 						"stroke-width": 1
-					}).toBack().noclick();
+					}).noclick();
 					s.orbit.length = s.orbit.getTotalLength();
 
 					//Find satellite position along orbit
@@ -269,7 +266,7 @@
 					//Create satellite
 					s.circle = _paper.circle(sPos.x, sPos.y, radius * 0.25).attr({
 						"stroke-width": 0,
-						fill: "#333"
+						fill: "#777"
 					}).noclick();
 				}
 			}
