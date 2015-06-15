@@ -3,6 +3,7 @@ div#tooltip {
 	background: rgba(0, 0, 0, 0.5);
 	border-radius: 3px;
 	min-width: 200px;
+	max-width: 300px;
 	min-height: 300px;
 	top: 50%;
 	left: 50%;
@@ -10,4 +11,21 @@ div#tooltip {
 	margin-left: 20px;
 	margin-top: 20px;
 	opacity: 0;
+	padding: 10px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+	tr td {
+		vertical-align: top;
+		padding: 10px;
+		text-shadow: 0 1px 0 #aaa;
+		small {
+			text-shadow: none;
+			font-size: 0.8em;
+			opacity: 0.8;
+		}
+	}
 }

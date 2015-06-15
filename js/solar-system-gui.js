@@ -6,12 +6,13 @@
 
 	//Private vars
 
-	var _update = 50; //Global animation speed (lower is faster, higher is easier on cpu)
+	var _update = 400; //Global animation speed (lower is faster, higher is easier on cpu)
 	var _w = window.innerWidth;
 	var _h = window.innerHeight;
 	var _z = 0;
 	var _paper = null;
 	var _tooltip = null;
+	var _orbitInterval = null;
 
 	//Private methods
 
@@ -28,6 +29,8 @@
 	 * @param {Object} evt Mouse event containing position.
 	 */
 	function showPlanetTooltip(evt) {
+		clearInterval(_orbitInterval);
+
 		//Put tooltip beside planet + offset
 		var x = evt.pageX;
 		var y = evt.pageY;
@@ -38,6 +41,8 @@
 			left: x,
 			opacity: 1
 		}, _update);
+
+		_tooltip.innerHTML = planetTable(this.planet);
 	}
 
 	/**
@@ -47,6 +52,44 @@
 		$(_tooltip).stop().animate({
 			opacity: 0
 		}, _update);
+
+		//Orbit animation
+		_orbitInterval = window.setInterval(reOrbit, _update);
+	}
+
+	/**
+	 * Creates an HTML table with relevant information about a planet.
+	 * @param   {Object}      planet The planet to display information for.
+	 * @returns {HTMLElement} Table of information.
+	 */
+	function planetTable(planet) {
+		var container = $("<div></div>")
+			.append(
+				$("<h1></h1>")
+				.text(planet.name)
+			);
+		var tableContainer = $("<div></div>").addClass("planet-table-container");
+		var table = $("<table></table>");
+		table.append(planetTableRow("Day", planet.day.natural + " <small>Earth hours</small>"));
+		table.append(planetTableRow("Year", planet.length_of_year.natural + " <small>Earth years</small>"));
+		table.append(planetTableRow("Mass", planet.mass.natural + " <small>times that of Earth</small>"));
+		table.append(planetTableRow("Distance", planet.distance.natural + " <small>million km</small>"));
+		table.append(planetTableRow("Radius", "~" + planet.radius.natural + "<small>km</small>"));
+		tableContainer.append(table);
+		container.append(tableContainer);
+		return container.html();
+	}
+
+	/**
+	 * Helper method for planetTable - generates a row by name + value.
+	 * @param   {string}      name  Name of row (left column).
+	 * @param   {string}      value Value of row (right column).
+	 * @returns {HTMLElement} Completed HTML TR element.
+	 */
+	function planetTableRow(name, value) {
+		return $("<tr></tr>")
+			.append($("<td></td>").text(name))
+			.append($("<td></td>").html(value));
 	}
 
 	/**
@@ -83,7 +126,7 @@
 		viewBox.Y = 0;
 
 		//Handle zoom
-		window.addEventListener("wheel", function (e) {
+		container.addEventListener("wheel", function (e) {
 			console.log(e);
 			var delta = e.wheelDelta / 120;
 
@@ -270,7 +313,7 @@
 		}
 
 		//Orbit animation
-		window.setInterval(reOrbit, _update);
+		_orbitInterval = window.setInterval(reOrbit, _update);
 	}
 
 	//Public methods
@@ -288,5 +331,9 @@
 		initContainer(container);
 		initSolarSystem();
 	};
+
+	solar.planetTable = function (planet) {
+		return planetTable(planet);
+	}
 
 }(window.solar = window.solar || {}));
