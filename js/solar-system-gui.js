@@ -6,6 +6,7 @@
 
 	//Private vars
 
+	var _update = 50; //Global animation speed (lower is faster, higher is easier on cpu)
 	var _w = window.innerWidth;
 	var _h = window.innerHeight;
 	var _z = 0;
@@ -36,7 +37,7 @@
 			top: y,
 			left: x,
 			opacity: 1
-		}, 250);
+		}, _update);
 	}
 
 	/**
@@ -45,7 +46,7 @@
 	function hidePlanetTooltip() {
 		$(_tooltip).stop().animate({
 			opacity: 0
-		}, 250);
+		}, _update);
 	}
 
 	/**
@@ -54,7 +55,7 @@
 	function ringOn() {
 		this.animate({
 			opacity: 0.3
-		}, 100);
+		}, _update);
 	}
 
 	/**
@@ -63,7 +64,7 @@
 	function ringOff() {
 		this.animate({
 			opacity: 0.2
-		}, 100);
+		}, _update);
 	}
 
 	/**
@@ -83,6 +84,7 @@
 
 		//Handle zoom
 		window.addEventListener("wheel", function (e) {
+			console.log(e);
 			var delta = e.wheelDelta / 120;
 
 			_z += delta;
@@ -102,14 +104,6 @@
 			viewBox.X -= (viewBoxWidth - vBWo) / 2;
 			viewBox.Y -= (viewBoxHeight - vBHo) / 2;
 			_paper.setViewBox(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
-		});
-
-		//Handle panning
-		document.addEventListener("mousedown", function (e) {
-			//Middle mouse was clicked
-			if (e.button === 1) {
-				e.preventDefault();
-			}
 		});
 
 		//Create tooltip
@@ -137,7 +131,7 @@
 			p.set.animate({
 				cx: pos.x,
 				cy: pos.y
-			}, 100);
+			}, _update);
 
 			//Satellites
 			if (p.satellites) {
@@ -156,13 +150,13 @@
 					s.circle.animate({
 						cx: sPos.x,
 						cy: sPos.y
-					}, 100);
+					}, _update);
 
 					//Move satellite orbit with planet
 					s.orbit.animate({
 						cx: pos.x,
 						cy: pos.y
-					}, 100);
+					}, _update);
 				}
 			}
 		}
@@ -203,7 +197,7 @@
 			//Normalized distance & radius
 			var radius = p.radius / max.radius * _h / 50 + 2;
 			radius = p.radius / 5000;
-			var distance = p.distance / 10;
+			var distance = p.distance / 10 + sunRadius * 1.5;
 
 			//Create orbit path
 			p.orbit = _paper.ellipse(_w / 2, _h / 2, distance, distance).attr({
@@ -215,7 +209,7 @@
 			p.orbit.length = p.orbit.getTotalLength();
 
 			//Create planet, position randomly along orbit path
-			var progress = p.orbit.length * Math.random();
+			var progress = p.orbit.length * i / solar.planets.length;
 			var pos = p.orbit.getPointAtLength(progress);
 
 			var outlineSize = Math.max(radius * 1.2, 10);
@@ -276,7 +270,7 @@
 		}
 
 		//Orbit animation
-		window.setInterval(reOrbit, 100);
+		window.setInterval(reOrbit, _update);
 	}
 
 	//Public methods
