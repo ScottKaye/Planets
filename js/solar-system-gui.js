@@ -74,7 +74,7 @@
 		table.append(planetTableRow("Year", planet.length_of_year.natural + " <small>Earth years</small>"));
 		table.append(planetTableRow("Mass", planet.mass.natural + " <small>times that of Earth</small>"));
 		table.append(planetTableRow("Distance", planet.distance.natural + " <small>million km</small>"));
-		table.append(planetTableRow("Radius", "~" + planet.radius.natural + "<small>km</small>"));
+		table.append(planetTableRow("Radius", "~" + planet.radius.natural + " <small>km</small>"));
 		tableContainer.append(table);
 		container.append(tableContainer);
 		return container.html();
