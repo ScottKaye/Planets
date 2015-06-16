@@ -76,6 +76,17 @@
 		table.append(planetTableRow("Distance", planet.distance.natural + " <small>million km</small>"));
 		table.append(planetTableRow("Radius", "~" + planet.radius.natural + " <small>km</small>"));
 		tableContainer.append(table);
+
+		if (planet.satellites) {
+			tableContainer.append("<h2>Satellites</h2>");
+			planet.satellites.forEach(function (s) {
+				tableContainer.append(satelliteTable(s));
+			});
+		}
+		else {
+			tableContainer.append("<table><tr><td>No satellites.</td></tr></table>");
+		}
+
 		container.append(tableContainer);
 		return container.html();
 	}
@@ -92,6 +103,19 @@
 			.append($("<td></td>").html(value));
 	}
 
+	function satelliteTable(satellite) {
+		console.log(satellite);
+		return $("<div></div>")
+			.append(
+				$("<h3></h3>").text(satellite.name)
+			)
+			.append(
+				$("<table></table>")
+				.append(planetTableRow("Orbit distance", satellite.distance_from_planet.natural + " <small>km</small>"))
+				.append(planetTableRow("Orbit time", satellite.orbit.natural + " <small>Earth days</small>"))
+			);
+	}
+	
 	/**
 	 * Lights up an orbit path ring.
 	 */
@@ -181,13 +205,13 @@
 				var j = p.satellites.length;
 				while (j--) {
 					var s = p.satellites[j];
-					s.orbit.progress += 2;
+					s.physicalOrbit.progress += 2;
 
-					var sProgress = s.orbit.length / (100 / s.orbit.progress);
-					if (sProgress >= s.orbit.length) s.orbit.progress = 0;
+					var sProgress = s.physicalOrbit.length / (100 / s.physicalOrbit.progress);
+					if (sProgress >= s.physicalOrbit.length) s.physicalOrbit.progress = 0;
 
 
-					var sPos = s.orbit.getPointAtLength(sProgress);
+					var sPos = s.physicalOrbit.getPointAtLength(sProgress);
 
 					//Move satellite along orbit
 					s.circle.animate({
@@ -196,7 +220,7 @@
 					}, _update);
 
 					//Move satellite orbit with planet
-					s.orbit.animate({
+					s.physicalOrbit.animate({
 						cx: pos.x,
 						cy: pos.y
 					}, _update);
@@ -287,18 +311,18 @@
 					var sRadius = radius * s.distance_from_planet / 100000;
 					sRadius = Math.max(sRadius, radius * 5);
 					sRadius = Math.min(sRadius, radius * 2.5);
-					s.orbit = _paper.circle(pos.x, pos.y, sRadius).attr({
+					s.physicalOrbit = _paper.circle(pos.x, pos.y, sRadius).attr({
 						opacity: 0.05,
 						stroke: "#000",
 						"stroke-width": 1
 					}).noclick();
-					s.orbit.length = s.orbit.getTotalLength();
+					s.physicalOrbit.length = s.physicalOrbit.getTotalLength();
 
 					//Find satellite position along orbit
-					var sProgress = s.orbit.length * Math.random();
-					var sPos = s.orbit.getPointAtLength(sProgress);
+					var sProgress = s.physicalOrbit.length * Math.random();
+					var sPos = s.physicalOrbit.getPointAtLength(sProgress);
 
-					s.orbit.progress = sProgress;
+					s.physicalOrbit.progress = sProgress;
 
 					//Create satellite
 					s.circle = _paper.circle(sPos.x, sPos.y, radius * 0.25).attr({
