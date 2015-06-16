@@ -5,10 +5,9 @@
 	"use strict";
 
 	//Public vars
-	
+
 	solar.status = solar.status || {};
 	solar.status.loaded = false;
-	
 	solar.planets = solar.planets || [];
 
 	//Private methods

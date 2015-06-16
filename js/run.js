@@ -1,6 +1,5 @@
 (function () {
 	"use strict";
-	
 	var container = document.getElementById("solar-system");
 
 	solar.loadApi(function() {
@@ -14,7 +13,5 @@
 				$("<div></div>")
 				.append(solar.planetTable(p)));
 		});
-		
 	});
-	
 })();
